@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Day 05 — Data dictionary v1 (completed early on 2026-11-16)  
+**Phase:** Day 06 — Relational design review (completed early on 2026-11-16)  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Day 06 — ER diagram and relational design review
+**Next:** Day 07 — PostgreSQL DDL v1
 
 ## Completed / verified
 
@@ -16,6 +16,7 @@
 - [x] Day 03: sixteen functional and ten non-functional requirements, twenty planned acceptance tests, five use cases and ADR-005 published.
 - [x] Day 04: four BPMN-inspired Mermaid process diagrams, DFD-0/DFD-1, event taxonomy, failure routing and ADR-006 published.
 - [x] Day 05: canonical field-level dictionary for ten entities, updated relational model and ingestion contracts.
+- [x] Day 06: cardinality and normalization review, constraint matrix, index candidates and ADR-007.
 
 ## Not yet implemented
 
@@ -60,6 +61,13 @@
 **Validation:** GitHub files published and read back. Documentation-only checks; PostgreSQL schema not yet implemented.
 **Decisions:** Refund lifecycle status added; explicit session end; campaign spend whole-campaign; currency CU.
 **Next:** Review ER cardinalities on Day 06, implement DDL on Day 07.
+
+### Day 06 — 2026-11-18 (completed early 2026-11-16)
+**Goal:** Review ten-entity relational design, cardinality, normalization, integrity boundaries and indexes.
+**Artifacts:** [RELATIONAL_DESIGN_REVIEW.md](RELATIONAL_DESIGN_REVIEW.md), [CONSTRAINT_MATRIX.md](CONSTRAINT_MATRIX.md), [INDEX_STRATEGY.md](INDEX_STRATEGY.md), [ADR-007](ADR/007-relational-integrity-boundaries.md).
+**Validation:** Source documents reviewed for consistency and GitHub file publication checked. No PostgreSQL execution or measured index benchmarks.
+**Decisions:** FK/CHECK/partial unique index for local integrity; cross-table invariants in quality suite.
+**Next:** Day 07 executable DDL, clean build and negative fixture tests.
 
 ## Daily journal template
 
