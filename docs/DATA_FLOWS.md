@@ -76,3 +76,7 @@ flowchart LR
 ## Operational metadata
 
 Record generation seed, generator version, batch ID, source row counts, rejected row counts, load timestamps, and query version. Avoid claiming this logging exists until implemented.
+
+## Day 05 contract resolution (2026-11-16)
+
+The [canonical data dictionary](DATA_DICTIONARY.md) resolves the earlier design gap: refunds now include `requested_at`, nullable `refunded_at` and `status` (`pending`, `failed`, `settled`). Sessions include explicit `ended_at`; event timestamps must be within session boundaries. Campaign `spend` is whole-campaign only, so daily ROAS is out of scope. These are design contracts, **not** implemented validations.
