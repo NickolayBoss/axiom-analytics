@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Day 04 — Business processes and data flows (completed early on 2026-11-15)  
+**Phase:** Day 05 — Data dictionary v1 (completed early on 2026-11-16)  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Day 05 — Data dictionary v1
+**Next:** Day 06 — ER diagram and relational design review
 
 ## Completed / verified
 
@@ -15,6 +15,7 @@
 - [x] Day 02: five simulated stakeholder personas, twelve business questions and four scenarios published.
 - [x] Day 03: sixteen functional and ten non-functional requirements, twenty planned acceptance tests, five use cases and ADR-005 published.
 - [x] Day 04: four BPMN-inspired Mermaid process diagrams, DFD-0/DFD-1, event taxonomy, failure routing and ADR-006 published.
+- [x] Day 05: canonical field-level dictionary for ten entities, updated relational model and ingestion contracts.
 
 ## Not yet implemented
 
@@ -52,6 +53,13 @@
 **Key decisions:** Quality-gated publication, session-based ordered funnel, explicit error codes and attribution limitations.  
 **Open questions:** Refund status field missing in original data model; session timeout and late-arriving events; daily spend granularity.  
 **Next step:** Resolve field-level contracts in Day 05 data dictionary.
+
+### Day 05 — 2026-11-17 (completed early 2026-11-16)
+**Goal:** Define field-level types, nullability, keys, enums, money rules and cross-table invariants.
+**Artifacts:** [DATA_DICTIONARY.md](DATA_DICTIONARY.md), [DATA_MODEL.md](DATA_MODEL.md), [DATA_FLOWS.md](DATA_FLOWS.md).
+**Validation:** GitHub files published and read back. Documentation-only checks; PostgreSQL schema not yet implemented.
+**Decisions:** Refund lifecycle status added; explicit session end; campaign spend whole-campaign; currency CU.
+**Next:** Review ER cardinalities on Day 06, implement DDL on Day 07.
 
 ## Daily journal template
 
