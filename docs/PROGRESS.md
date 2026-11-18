@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Day 06 — Relational design review (completed early on 2026-11-16)  
+**Phase:** Day 07 — PostgreSQL DDL published; runtime verification pending (2026-11-18)  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Day 07 — PostgreSQL DDL v1
+**Next:** Execute clean-schema migration and negative fixtures on PostgreSQL; then Day 08
 
 ## Completed / verified
 
@@ -20,7 +20,7 @@
 
 ## Not yet implemented
 
-- [ ] PostgreSQL DDL and migrations
+- [x] PostgreSQL DDL source and migration published (runtime verification pending)
 - [ ] Synthetic dataset and generator
 - [ ] Python ingestion pipeline
 - [ ] SQL analytical cases
@@ -68,6 +68,14 @@
 **Validation:** Source documents reviewed for consistency and GitHub file publication checked. No PostgreSQL execution or measured index benchmarks.
 **Decisions:** FK/CHECK/partial unique index for local integrity; cross-table invariants in quality suite.
 **Next:** Day 07 executable DDL, clean build and negative fixture tests.
+
+### Day 07 — 2026-11-18 (implementation published; acceptance gate open)
+**Goal:** Build PostgreSQL DDL v1 and executable verification fixtures.
+**Artifacts:** [migration](../database/migrations/001_initial_schema.sql), [constraint fixtures](../database/tests/001_constraints.sql), [quality gate SQL](../database/tests/002_quality_gate.sql), [test runner](../database/tests/run_constraints.sh), [setup guide](POSTGRESQL_SETUP.md).
+**Verification:** GitHub publication and file read-back; local PostgreSQL execution unavailable (psql/server/Docker absent). Migration and fixtures **not executed**, so clean-schema acceptance criterion remains unverified.
+**Decisions:** 10 tables; local CHECK/FK constraints; partial unique captured-payment index; 13 expected negative fixtures; cross-table quality queries separate.
+**Open:** Run migration and tests on a PostgreSQL-equipped machine before closing Issue #6.
+**Next:** Day 08 synthetic data specification after runtime gate is satisfied.
 
 ## Daily journal template
 
