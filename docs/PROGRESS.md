@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Day 07 — PostgreSQL DDL published; runtime verification pending (2026-11-18)  
+**Phase:** Day 08 — Synthetic data specification published (2026-11-19); Day 07 PostgreSQL runtime verification remains pending  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Execute clean-schema migration and negative fixtures on PostgreSQL; then Day 08
+**Next:** Day 09 — Customer and catalog generator; separately verify Day 07 migration on PostgreSQL
 
 ## Completed / verified
 
@@ -21,6 +21,7 @@
 ## Not yet implemented
 
 - [x] PostgreSQL DDL source and migration published (runtime verification pending)
+- [x] Day 08 synthetic data specification, edge-case catalog, generator contract and JSON configuration published
 - [ ] Synthetic dataset and generator
 - [ ] Python ingestion pipeline
 - [ ] SQL analytical cases
@@ -76,6 +77,14 @@
 **Decisions:** 10 tables; local CHECK/FK constraints; partial unique captured-payment index; 13 expected negative fixtures; cross-table quality queries separate.
 **Open:** Run migration and tests on a PostgreSQL-equipped machine before closing Issue #6.
 **Next:** Day 08 synthetic data specification after runtime gate is satisfied.
+
+### Day 08 — 2026-11-20 (completed early 2026-11-19)
+**Goal:** Specify a reproducible synthetic e-commerce dataset, distributions, edge cases and generator interface.
+**Artifacts:** [SYNTHETIC_DATA_SPEC.md](SYNTHETIC_DATA_SPEC.md), [SYNTHETIC_EDGE_CASES.md](SYNTHETIC_EDGE_CASES.md), [GENERATOR_CONTRACT.md](GENERATOR_CONTRACT.md), [synthetic_data.json](../config/synthetic_data.json).
+**Validation:** Documentation and JSON configuration published and read back from GitHub; no generator execution, dataset hashes or PostgreSQL imports have been performed.
+**Decisions:** Seed 20261120, 2025 UTC observation window, fictional CU, stable ID ordering, independent RNG streams and separate invalid fixtures.
+**Open:** Day 07 migration still awaits PostgreSQL runtime verification.
+**Next:** Day 09 customer/catalog generator.
 
 ## Daily journal template
 
