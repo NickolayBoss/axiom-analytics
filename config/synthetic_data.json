@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "seed": 20261120,
+  "currency": "CU",
+  "timezone": "UTC",
+  "observation_start": "2025-01-01T00:00:00Z",
+  "observation_end": "2025-12-31T23:59:59Z",
+  "counts": {
+    "categories": 12,
+    "products": 240,
+    "customers": 10000,
+    "campaigns": 24,
+    "orders": 40000,
+    "sessions": 100000
+  },
+  "targets_approximate": {
+    "order_items": 80000,
+    "payments": 45000,
+    "refunds": 2000,
+    "events": 250000
+  },
+  "customer_region_weights": {
+    "North": 0.5,
+    "Central": 0.25,
+    "South": 0.15,
+    "West": 0.1
+  },
+  "acquisition_source_weights": {
+    "organic": 0.3,
+    "paid_search": 0.25,
+    "social": 0.2,
+    "referral": 0.15,
+    "direct": 0.1
+  },
+  "order_status_weights": {
+    "completed": 0.78,
+    "cancelled": 0.12,
+    "expired": 0.06,
+    "placed": 0.04
+  },
+  "order_line_count_weights": {
+    "1": 0.4,
+    "2": 0.35,
+    "3": 0.2,
+    "4": 0.05
+  },
+  "discount_probability": 0.3,
+  "discount_min_rate": 0.05,
+  "discount_max_rate": 0.25,
+  "refund_incidence_rate": 0.05,
+  "anonymous_session_rate": 0.2,
+  "campaign_session_rate": 0.3,
+  "session_duration_minutes": {
+    "min": 1,
+    "max": 90
+  },
+  "product_price_cu": {
+    "min": 5,
+    "max": 1500
+  },
+  "notes": "Configuration specification only; generator implementation is planned for Days 09-11."
+}
