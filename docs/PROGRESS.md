@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Day 09 — Customer and catalog generator published (2026-11-20); GitHub CI confirmation pending  
+**Phase:** Day 09 published; Day 07 PostgreSQL integration CI added (2026-11-20), runtime result pending  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Confirm Day 09 GitHub CI; Day 10 order/item/payment generator; separately verify Day 07 PostgreSQL migration
+**Next:** Confirm PostgreSQL integration workflow run and Day 09 CI; Day 10 order/item/payment generator
 
 ## Completed / verified
 
@@ -94,6 +94,12 @@
 **Decisions:** Standard-library Python; deterministic independent RNG streams; data outputs generated on demand.
 **Open:** Verify GitHub CI and Day 07 PostgreSQL migration.
 **Next:** Day 10 order/item/payment generator.
+
+### PostgreSQL Day 07 verification follow-up — 2026-11-20
+**Goal:** Remove the need for user-installed PostgreSQL by using a disposable GitHub Actions PostgreSQL 16 service.
+**Artifacts:** [PostgreSQL CI workflow](../.github/workflows/postgres-integration.yml), [schema assertions](../database/tests/003_schema_assertions.sql), [quality-gate fixtures](../database/tests/004_quality_gate_assertions.sql), [setup guide](POSTGRESQL_SETUP.md).
+**Verification:** GitHub source publication verified. A successful PostgreSQL CI run has **not** been observed yet; Day 07 acceptance issue remains open until that evidence exists.
+**Next:** Inspect the Actions run; fix any failures and record the actual result.
 
 ## Daily journal template
 
