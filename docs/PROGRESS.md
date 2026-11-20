@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Day 09 generator published and GitHub Actions green (user screenshot 2026-11-20); Day 07 PostgreSQL integration green on earlier user screenshot; individual job logs not independently reviewed  
+**Phase:** Days 01–09 published; Day 07 and Day 09 GitHub Actions workflow runs green on user-provided screenshots (2026-11-20); individual job logs not independently reviewed  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Day 10 order/item/payment generator; review PostgreSQL CI job logs and close Day 07 issue if acceptance confirmed
+**Next:** Day 10 order/item/payment generator; review detailed CI logs if deeper audit is needed
 
 ## Completed / verified
 
@@ -105,6 +105,11 @@
 **Day 09:** User-provided GitHub Actions screenshot shows both Day 09 Python Generator Checks runs successful (15s and 9s). Issue #8 closed. This is evidence of overall workflow success; individual step logs were not inspected.
 **Day 07:** Earlier screenshot shows latest PostgreSQL Integration Tests run green (28s), after two red runs. Job logs not independently reviewed; Issue #6 remains open pending acceptance evidence.
 **Next:** Day 10 and final Day 07 log review.
+
+### Day 07 acceptance closure — 2026-11-20
+**Evidence:** User-provided GitHub Actions screenshot shows latest PostgreSQL schema integration test run successful (green check, 28 seconds) after two failed earlier attempts. The committed workflow includes transactional migration, schema assertions, 13 negative constraint fixtures, cross-table quality fixtures and final rollback check; its overall green status indicates those configured steps completed without failing the workflow.
+**Limitation:** Individual job logs and assertions were not independently retrieved. This records workflow-level evidence, not a separate manual database audit.
+**Decision:** Close Issue #6 as the requested clean-schema CI gate has a successful workflow result. Follow-up regression and detailed log review remain appropriate.
 
 ## Daily journal template
 
