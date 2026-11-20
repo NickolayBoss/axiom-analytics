@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Day 09 published; Day 07 PostgreSQL integration CI added (2026-11-20), runtime result pending  
+**Phase:** Day 09 generator published and GitHub Actions green (user screenshot 2026-11-20); Day 07 PostgreSQL integration green on earlier user screenshot; individual job logs not independently reviewed  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Confirm PostgreSQL integration workflow run and Day 09 CI; Day 10 order/item/payment generator
+**Next:** Day 10 order/item/payment generator; review PostgreSQL CI job logs and close Day 07 issue if acceptance confirmed
 
 ## Completed / verified
 
@@ -22,7 +22,7 @@
 
 - [x] PostgreSQL DDL source and migration published (runtime verification pending)
 - [x] Day 08 synthetic data specification, edge-case catalog, generator contract and JSON configuration published
-- [x] Day 09 generator Python source, unit tests, CI workflow and usage guide published (CI status not yet confirmed)
+- [x] Day 09 generator Python source, unit tests, CI workflow and usage guide published (green CI status shown in user screenshot; job logs not independently reviewed)
 - [ ] Synthetic dataset and generator
 - [ ] Python ingestion pipeline
 - [ ] SQL analytical cases
@@ -100,6 +100,11 @@
 **Artifacts:** [PostgreSQL CI workflow](../.github/workflows/postgres-integration.yml), [schema assertions](../database/tests/003_schema_assertions.sql), [quality-gate fixtures](../database/tests/004_quality_gate_assertions.sql), [setup guide](POSTGRESQL_SETUP.md).
 **Verification:** GitHub source publication verified. A successful PostgreSQL CI run has **not** been observed yet; Day 07 acceptance issue remains open until that evidence exists.
 **Next:** Inspect the Actions run; fix any failures and record the actual result.
+
+### CI status update — 2026-11-20
+**Day 09:** User-provided GitHub Actions screenshot shows both Day 09 Python Generator Checks runs successful (15s and 9s). Issue #8 closed. This is evidence of overall workflow success; individual step logs were not inspected.
+**Day 07:** Earlier screenshot shows latest PostgreSQL Integration Tests run green (28s), after two red runs. Job logs not independently reviewed; Issue #6 remains open pending acceptance evidence.
+**Next:** Day 10 and final Day 07 log review.
 
 ## Daily journal template
 
