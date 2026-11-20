@@ -1,0 +1,55 @@
+name: PostgreSQL schema integration tests
+
+on:
+  push:
+    paths:
+      - 'database/**'
+      - '.github/workflows/postgres-integration.yml'
+  pull_request:
+    paths:
+      - 'database/**'
+      - '.github/workflows/postgres-integration.yml'
+  workflow_dispatch:
+
+jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: axiom
+          POSTGRES_PASSWORD: axiom_test_only
+          POSTGRES_DB: axiom_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U axiom -d axiom_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      PGHOST: localhost
+      PGPORT: '5432'
+      PGUSER: axiom
+      PGPASSWORD: axiom_test_only
+      PGDATABASE: axiom_ci
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+      - name: Apply migration transactionally
+        run: psql -X -v ON_ERROR_STOP=1 -1 -f database/migrations/001_initial_schema.sql
+      - name: Verify schema and indexes
+        run: psql -X -v ON_ERROR_STOP=1 -f database/tests/003_schema_assertions.sql
+      - name: Run 13 negative constraint fixtures with rollback
+        run: bash database/tests/run_constraints.sh
+      - name: Run cross-table quality-gate fixtures
+        run: psql -X -v ON_ERROR_STOP=1 -f database/tests/004_quality_gate_assertions.sql
+      - name: Confirm fixture rollback
+        run: |
+          test "$(psql -X -At -v ON_ERROR_STOP=1 -c 'SELECT COUNT(*) FROM customers')" = "0"
+          test "$(psql -X -At -v ON_ERROR_STOP=1 -c 'SELECT COUNT(*) FROM orders')" = "0"
+          echo 'PASS: all fixtures rolled back'
