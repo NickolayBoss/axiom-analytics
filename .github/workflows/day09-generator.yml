@@ -1,0 +1,42 @@
+name: Day 09 Python generator checks
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'config/synthetic_data.json'
+      - '.github/workflows/day09-generator.yml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'config/synthetic_data.json'
+      - '.github/workflows/day09-generator.yml'
+  workflow_dispatch:
+
+jobs:
+  generator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate records
+        run: python -m src.generator --validate-only
+      - name: Generate sample CSV and manifest
+        run: python -m src.generator --output /tmp/axiom-generated
+      - name: Check manifest counts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m = json.loads(Path('/tmp/axiom-generated/manifest.json').read_text())
+          assert {k: v['rows'] for k, v in m['files'].items()} == {
+              'categories.csv': 12, 'products.csv': 240, 'customers.csv': 10000
+          }
+          print('Manifest counts verified')
+          PY
