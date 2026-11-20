@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Day 08 — Synthetic data specification published (2026-11-19); Day 07 PostgreSQL runtime verification remains pending  
+**Phase:** Day 09 — Customer and catalog generator published (2026-11-20); GitHub CI confirmation pending  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Day 09 — Customer and catalog generator; separately verify Day 07 migration on PostgreSQL
+**Next:** Confirm Day 09 GitHub CI; Day 10 order/item/payment generator; separately verify Day 07 PostgreSQL migration
 
 ## Completed / verified
 
@@ -22,6 +22,7 @@
 
 - [x] PostgreSQL DDL source and migration published (runtime verification pending)
 - [x] Day 08 synthetic data specification, edge-case catalog, generator contract and JSON configuration published
+- [x] Day 09 generator Python source, unit tests, CI workflow and usage guide published (CI status not yet confirmed)
 - [ ] Synthetic dataset and generator
 - [ ] Python ingestion pipeline
 - [ ] SQL analytical cases
@@ -85,6 +86,14 @@
 **Decisions:** Seed 20261120, 2025 UTC observation window, fictional CU, stable ID ordering, independent RNG streams and separate invalid fixtures.
 **Open:** Day 07 migration still awaits PostgreSQL runtime verification.
 **Next:** Day 09 customer/catalog generator.
+
+### Day 09 — 2026-11-21 (published early 2026-11-20)
+**Goal:** Implement deterministic synthetic customer and catalog generation.
+**Artifacts:** [Python generator](../src/generator.py), [unit tests](../tests/test_generator.py), [GitHub Actions workflow](../.github/workflows/day09-generator.yml), [run guide](DAY09_GENERATOR.md).
+**Validation:** Local development prototype: 10/10 unit tests passed; 12 categories, 240 products and 10,000 customers generated, manifest hashes repeated. GitHub files read back. GitHub Actions status for the exact published revision not confirmed; PostgreSQL import not performed.
+**Decisions:** Standard-library Python; deterministic independent RNG streams; data outputs generated on demand.
+**Open:** Verify GitHub CI and Day 07 PostgreSQL migration.
+**Next:** Day 10 order/item/payment generator.
 
 ## Daily journal template
 
