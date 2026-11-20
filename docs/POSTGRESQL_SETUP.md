@@ -30,6 +30,18 @@ docker stop axiom-pg
 
 The fixture suite tests row-level constraints, not the full cross-table quality gate. After loading generated data, run `psql -X -f database/tests/002_quality_gate.sql` and require zero result rows.
 
+## Automated integration test (added 2026-11-20)
+
+[GitHub Actions PostgreSQL integration workflow](../.github/workflows/postgres-integration.yml) provisions PostgreSQL 16 as a disposable service and performs:
+
+1. Transactional schema migration with `ON_ERROR_STOP=1`.
+2. Schema assertions for ten tables, eleven foreign keys and captured-payment uniqueness.
+3. Thirteen negative row-level constraint fixtures, with rollback.
+4. Cross-table quality fixture assertions and rollback.
+5. A final check that test rows were not persisted.
+
+**Check execution:** Open [Actions](https://github.com/NickolayBoss/axiom-analytics/actions/workflows/postgres-integration.yml) to inspect the latest run. Creating a workflow file does not itself prove a successful CI run. Only close the Day 07 acceptance issue after a green run has been confirmed.
+
 ## Verification record (2026-11-18)
 
 - GitHub file publication and read-back: verified.
