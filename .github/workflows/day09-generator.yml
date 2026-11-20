@@ -15,28 +15,50 @@ on:
       - '.github/workflows/day09-generator.yml'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   generator:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - name: Unit tests
+          python-version: ${{ matrix.python-version }}
+      - name: Compile Python source
+        run: python -m compileall -q src tests
+      - name: Run unit tests
         run: python -m unittest discover -s tests -v
-      - name: Validate records
+      - name: Validate generated records
         run: python -m src.generator --validate-only
       - name: Generate sample CSV and manifest
         run: python -m src.generator --output /tmp/axiom-generated
-      - name: Check manifest counts
+      - name: Assert counts, checksums and repeatability
         run: |
+          python -m src.generator --output /tmp/axiom-regenerated
           python - <<'PY'
+          import csv
+          import hashlib
           import json
           from pathlib import Path
-          m = json.loads(Path('/tmp/axiom-generated/manifest.json').read_text())
-          assert {k: v['rows'] for k, v in m['files'].items()} == {
-              'categories.csv': 12, 'products.csv': 240, 'customers.csv': 10000
-          }
-          print('Manifest counts verified')
+          left = Path('/tmp/axiom-generated')
+          right = Path('/tmp/axiom-regenerated')
+          manifest = json.loads((left / 'manifest.json').read_text(encoding='utf-8'))
+          expected = {'categories.csv': 12, 'products.csv': 240, 'customers.csv': 10000}
+          assert {k: v['rows'] for k, v in manifest['files'].items()} == expected
+          assert manifest['validation']['status'] == 'passed'
+          for filename, count in expected.items():
+              content = (left / filename).read_bytes()
+              assert content == (right / filename).read_bytes(), filename
+              assert hashlib.sha256(content).hexdigest() == manifest['files'][filename]['sha256']
+              with (left / filename).open(newline='', encoding='utf-8') as handle:
+                  assert sum(1 for _ in csv.DictReader(handle)) == count
+          assert (left / 'manifest.json').read_bytes() == (right / 'manifest.json').read_bytes()
+          print('PASS: three CSV files, row counts, hashes and deterministic regeneration')
           PY
