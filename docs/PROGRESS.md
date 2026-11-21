@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Days 01–10 source published; Day 10 CI results not yet confirmed  
+**Phase:** Days 01–10 published; Day 10 Python CI run #9 green on user-provided GitHub Actions screenshot (2026-11-21)  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Run Day 10 CI manually once and verify results; Day 11 campaign/session/event generator
+**Next:** Day 11 campaign/session/event generator; PostgreSQL CSV import remains a later integration gate
 
 ## Completed / verified
 
@@ -125,6 +125,11 @@
 **Root cause identified in source:** `parse_config` mistakenly required exact `counts` for `order_items` and `payments`, which are configured only under `targets_approximate`.
 **Fix:** Parse only exact-count tables; verify manifest checksums for all six CSVs; change Python CI to a single Python 3.12 job with `workflow_dispatch` only. This avoids an email-producing workflow run on each push.
 **Evidence:** Updated files published and read back from GitHub. A passing CI run for the new revision has not yet been observed. Issue #9 remains open pending execution.
+
+### Day 10 acceptance — 2026-11-21
+**Evidence:** User-provided GitHub Actions screenshot shows Python synthetic data generator checks #9 (commit `1aebeecc`) succeeded in 23 seconds. This confirms the workflow for that revision, including unit tests, generation, validation and repeatability checks configured at the time of the run.
+**CI noise:** Subsequent workflow revision switches to manual-only dispatch and one Python 3.12 job, preventing repeated automatic push runs. That manual-only revision has not itself been run in the screenshot.
+**Decision:** Close Issue #9 for the Day 10 generator acceptance gate. Full six-table PostgreSQL import and future CI workflow revisions are not independently verified.
 
 ## Daily journal template
 
