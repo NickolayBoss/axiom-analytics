@@ -73,7 +73,7 @@ def validate(rows, config):
         records = rows[table]
         if table in config["counts"] and len(records) != config["counts"][table]:
             raise ValueError("Unexpected count: " + table)
-        pk = {"categories": "category_id", "products": "product_id", "customers": "customer_id"}[table]
+        pk = {"categories": "category_id", "products": "product_id", "customers": "customer_id", "orders": "order_id", "order_items": "order_item_id", "payments": "payment_id"}[table]
         if len({r[pk] for r in records}) != len(records) or any(set(r) != set(fields) for r in records):
             raise ValueError("Invalid keys/columns: " + table)
     category_ids = {r["category_id"] for r in rows["categories"]}
