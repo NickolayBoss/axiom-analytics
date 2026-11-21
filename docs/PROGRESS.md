@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Days 01–09 published; Day 07 and Day 09 GitHub Actions workflow runs green on user-provided screenshots (2026-11-20); individual job logs not independently reviewed  
+**Phase:** Days 01–10 source published; Day 10 CI results not yet confirmed  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Day 10 order/item/payment generator; review detailed CI logs if deeper audit is needed
+**Next:** Verify Day 10 CI and fix failures if any; Day 11 campaign/session/event generator
 
 ## Completed / verified
 
@@ -23,7 +23,8 @@
 - [x] PostgreSQL DDL source and migration published (runtime verification pending)
 - [x] Day 08 synthetic data specification, edge-case catalog, generator contract and JSON configuration published
 - [x] Day 09 generator Python source, unit tests, CI workflow and usage guide published (green CI status shown in user screenshot; job logs not independently reviewed)
-- [ ] Synthetic dataset and generator
+- [x] Day 10 orders, order_items and payments generator code, unit tests and CI workflow published (runtime CI result pending)
+- [ ] Full synthetic dataset and generator (Days 11–12)
 - [ ] Python ingestion pipeline
 - [ ] SQL analytical cases
 - [ ] Automated data quality checks
@@ -110,6 +111,14 @@
 **Evidence:** User-provided GitHub Actions screenshot shows latest PostgreSQL schema integration test run successful (green check, 28 seconds) after two failed earlier attempts. The committed workflow includes transactional migration, schema assertions, 13 negative constraint fixtures, cross-table quality fixtures and final rollback check; its overall green status indicates those configured steps completed without failing the workflow.
 **Limitation:** Individual job logs and assertions were not independently retrieved. This records workflow-level evidence, not a separate manual database audit.
 **Decision:** Close Issue #6 as the requested clean-schema CI gate has a successful workflow result. Follow-up regression and detailed log review remain appropriate.
+
+### Day 10 — 2026-11-22 (published early 2026-11-21)
+**Goal:** Generate deterministic orders, order lines and payment attempts.
+**Artifacts:** [Order generator](../src/order_generator.py), [integrated CLI](../src/generator.py), [unit tests](../tests/test_orders.py), [CI](../.github/workflows/day09-generator.yml), [runbook](DAY10_TRANSACTIONS.md).
+**Verification:** GitHub source published; CI execution result not independently observed yet. No PostgreSQL import claim.
+**Decisions:** Decimal-based discounted line totals, exactly one captured payment for completed orders, no captures for other statuses, seeded independent transaction RNG.
+**Open:** CI green run and actual six-table PostgreSQL import verification.
+**Next:** Day 11 marketing, sessions and events.
 
 ## Daily journal template
 
