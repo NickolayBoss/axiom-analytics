@@ -1,4 +1,4 @@
-name: Day 09 Python generator checks
+name: Python synthetic data generator checks
 
 on:
   push:
@@ -50,8 +50,13 @@ jobs:
           left = Path('/tmp/axiom-generated')
           right = Path('/tmp/axiom-regenerated')
           manifest = json.loads((left / 'manifest.json').read_text(encoding='utf-8'))
-          expected = {'categories.csv': 12, 'products.csv': 240, 'customers.csv': 10000}
-          assert {k: v['rows'] for k, v in manifest['files'].items()} == expected
+          expected = {'categories.csv': 12, 'products.csv': 240, 'customers.csv': 10000,
+                      'orders.csv': 40000}
+          actual = {k: v['rows'] for k, v in manifest['files'].items()}
+          for filename, count in expected.items():
+              assert actual[filename] == count
+          assert actual['order_items.csv'] >= 40000
+          assert actual['payments.csv'] >= 1
           assert manifest['validation']['status'] == 'passed'
           for filename, count in expected.items():
               content = (left / filename).read_bytes()
