@@ -17,7 +17,7 @@ class GeneratorTests(unittest.TestCase):
         cls.rows = generate(cls.config)
 
     def test_counts(self):
-        for table in FIELDS:
+        for table in ("categories", "products", "customers", "orders"):
             self.assertEqual(len(self.rows[table]), self.config["counts"][table])
 
     def test_validation(self):
