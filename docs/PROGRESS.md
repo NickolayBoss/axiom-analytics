@@ -5,7 +5,7 @@
 **Phase:** Days 01–10 source published; Day 10 CI results not yet confirmed  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Verify Day 10 CI and fix failures if any; Day 11 campaign/session/event generator
+**Next:** Run Day 10 CI manually once and verify results; Day 11 campaign/session/event generator
 
 ## Completed / verified
 
@@ -119,6 +119,12 @@
 **Decisions:** Decimal-based discounted line totals, exactly one captured payment for completed orders, no captures for other statuses, seeded independent transaction RNG.
 **Open:** CI green run and actual six-table PostgreSQL import verification.
 **Next:** Day 11 marketing, sessions and events.
+
+### Day 10 CI stabilization — 2026-11-21
+**Incident:** GitHub Actions screenshot shows Day 10 CI failures on several consecutive push commits.
+**Root cause identified in source:** `parse_config` mistakenly required exact `counts` for `order_items` and `payments`, which are configured only under `targets_approximate`.
+**Fix:** Parse only exact-count tables; verify manifest checksums for all six CSVs; change Python CI to a single Python 3.12 job with `workflow_dispatch` only. This avoids an email-producing workflow run on each push.
+**Evidence:** Updated files published and read back from GitHub. A passing CI run for the new revision has not yet been observed. Issue #9 remains open pending execution.
 
 ## Daily journal template
 
