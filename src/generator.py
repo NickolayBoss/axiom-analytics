@@ -28,7 +28,7 @@ def parse_config(path):
         raise ValueError("Unsupported configuration")
     if type(config["seed"]) is not int or config["seed"] < 0:
         raise ValueError("Invalid seed")
-    for name in FIELDS:
+    for name in ("categories", "products", "customers", "orders"):
         if type(config["counts"][name]) is not int or config["counts"][name] <= 0:
             raise ValueError("Invalid count: " + name)
     if config["counts"]["products"] < config["counts"]["categories"]:
