@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Days 01–10 published; Day 10 Python CI run #9 green on user-provided GitHub Actions screenshot (2026-11-21)  
+**Phase:** Days 01–11 source published; Day 11 manual CI verification pending  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Day 11 campaign/session/event generator; PostgreSQL CSV import remains a later integration gate
+**Next:** Confirm Day 11 manual Python CI; Day 12 refunds, data quality and PostgreSQL import
 
 ## Completed / verified
 
@@ -24,7 +24,8 @@
 - [x] Day 08 synthetic data specification, edge-case catalog, generator contract and JSON configuration published
 - [x] Day 09 generator Python source, unit tests, CI workflow and usage guide published (green CI status shown in user screenshot; job logs not independently reviewed)
 - [x] Day 10 orders, order_items and payments generator code, unit tests and CI workflow published (runtime CI result pending)
-- [ ] Full synthetic dataset and generator (Days 11–12)
+- [x] Day 11 campaigns, sessions and ordered funnel events published (CI outcome pending)
+- [ ] Full ten-table synthetic dataset and generator (Day 12 refunds)
 - [ ] Python ingestion pipeline
 - [ ] SQL analytical cases
 - [ ] Automated data quality checks
@@ -130,6 +131,14 @@
 **Evidence:** User-provided GitHub Actions screenshot shows Python synthetic data generator checks #9 (commit `1aebeecc`) succeeded in 23 seconds. This confirms the workflow for that revision, including unit tests, generation, validation and repeatability checks configured at the time of the run.
 **CI noise:** Subsequent workflow revision switches to manual-only dispatch and one Python 3.12 job, preventing repeated automatic push runs. That manual-only revision has not itself been run in the screenshot.
 **Decision:** Close Issue #9 for the Day 10 generator acceptance gate. Full six-table PostgreSQL import and future CI workflow revisions are not independently verified.
+
+### Day 11 — 2026-11-22 (published ahead of roadmap date)
+**Goal:** Generate deterministic campaigns, sessions and ordered funnel events with optional purchase linkage.
+**Artifacts:** [marketing generator](../src/marketing_generator.py), [integrated CLI](../src/generator.py), [marketing tests](../tests/test_marketing.py), [runbook](DAY11_MARKETING.md), [manual CI workflow](../.github/workflows/day09-generator.yml).
+**Verification:** GitHub source publication and read-back. The current code has not yet been observed passing GitHub Actions; local git clone was blocked by unavailable external DNS. Issue #10 stays open until verified.
+**Decisions:** 24 fictional campaigns, 100k sessions, independent seeded streams, strict funnel ordering, purchase/customer match, explicit whole-campaign spend and unattributed sessions.
+**Open:** CI green evidence, refunds, PostgreSQL import, end-to-end SQL quality gate.
+**Next:** Day 12 data quality and remaining refunds table.
 
 ## Daily journal template
 
