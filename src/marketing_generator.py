@@ -87,7 +87,7 @@ def generate_marketing(base, config):
         reached = 5 if linked_order else rng_event.choices([1, 2, 3, 4], weights=[0.24, 0.37, 0.26, 0.13])[0]
         product = rng_event.choice(product_ids)
         for step, kind in enumerate(STAGES[1:reached], 1):
-            occurred = began + timedelta(minutes=step * 2)
+            occurred = began + timedelta(minutes=10 if kind == "purchase" else step * 2)
             add_event(sid, occurred, kind,
                       linked_order["order_id"] if kind == "purchase" else "",
                       product if kind in ("product_view", "add_to_cart") else "")
