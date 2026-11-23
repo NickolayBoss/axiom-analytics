@@ -42,7 +42,8 @@ jobs:
           assert actual['order_items.csv'] >= 40000
           assert actual['payments.csv'] >= 1
           assert actual['events.csv'] >= 100000
-          assert len(actual) == 9
+          assert len(actual) == 10
+          assert actual['refunds.csv'] > 0
           assert manifest['validation']['status'] == 'passed'
           for filename, info in manifest['files'].items():
               content = (left / filename).read_bytes()
@@ -51,5 +52,5 @@ jobs:
               with (left / filename).open(newline='', encoding='utf-8') as handle:
                   assert sum(1 for _ in csv.DictReader(handle)) == info['rows']
           assert (left / 'manifest.json').read_bytes() == (right / 'manifest.json').read_bytes()
-          print('PASS: nine CSV files, row counts, hashes and deterministic regeneration')
+          print('PASS: ten CSV files, row counts, hashes and deterministic regeneration')
           PY
