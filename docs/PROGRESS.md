@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Days 01–11 source published; Day 11 manual CI verification pending  
+**Phase:** Days 01–12 source published; Day 11 and Day 12 CI acceptance pending  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Confirm Day 11 manual Python CI; Day 12 refunds, data quality and PostgreSQL import
+**Next:** Verify Day 12 ten-table generator and PostgreSQL import; Day 13 SQL fundamentals
 
 ## Completed / verified
 
@@ -25,10 +25,11 @@
 - [x] Day 09 generator Python source, unit tests, CI workflow and usage guide published (green CI status shown in user screenshot; job logs not independently reviewed)
 - [x] Day 10 orders, order_items and payments generator code, unit tests and CI workflow published (runtime CI result pending)
 - [x] Day 11 campaigns, sessions and ordered funnel events published (CI outcome pending)
-- [ ] Full ten-table synthetic dataset and generator (Day 12 refunds)
+- [x] Day 12 refunds and Python quality gates published; CI and PostgreSQL import not yet verified
 - [ ] Python ingestion pipeline
 - [ ] SQL analytical cases
-- [ ] Automated data quality checks
+- [x] Python in-memory financial and referential quality checks published (runtime verification pending)
+- [ ] PostgreSQL-backed end-to-end data quality checks
 - [ ] BI dashboards
 - [ ] Reproducible local deployment
 - [ ] Final analytical report
@@ -151,3 +152,11 @@
 **Next step:**  
 
 Do not check off an item until the corresponding artifact exists and has been verified.
+
+### Day 12 — 2026-11-23
+**Goal:** Complete ten-entity synthetic data generation with refunds and quality checks.
+**Artifacts:** [refund/quality source](../src/refund_quality.py), [generator CLI](../src/generator.py), [tests](../tests/test_refunds.py), [guide](DAY12_QUALITY.md), [manual-only CI](../.github/workflows/day09-generator.yml).
+**Verification:** Source and documentation published on GitHub. No successful CI run for this revision observed. External Git clone unavailable in current environment (DNS failure). PostgreSQL import and SQL quality-gate results not confirmed.
+**Publication policy:** Few meaningful commits; manual-only CI prevents per-commit email noise. Do not manufacture contribution activity.
+**Open:** Day 11 CI, Day 12 CI, real ten-table PostgreSQL import, SQL quality gate.
+**Next:** Day 13 SQL fundamentals after quality acceptance.
