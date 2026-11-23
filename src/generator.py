@@ -10,14 +10,16 @@ import random
 
 from src.order_generator import FIELDS as TRANSACTION_FIELDS, generate_transactions, validate_transactions
 from src.marketing_generator import FIELDS as MARKETING_FIELDS, generate_marketing, validate_marketing
+from src.refund_quality import FIELDS as REFUND_FIELDS, generate_refunds, validate_refunds, quality_report
 
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 FIELDS = {
     "categories": ["category_id", "category_name"],
     "products": ["product_id", "category_id", "product_name", "list_price", "active"],
     "customers": ["customer_id", "created_at", "region", "acquisition_source"],
     **TRANSACTION_FIELDS,
     **MARKETING_FIELDS,
+    "refunds": REFUND_FIELDS,
 }
 CONFIG_KEYS = {"schema_version","seed","currency","timezone","observation_start","observation_end","counts","targets_approximate","customer_region_weights","acquisition_source_weights","order_status_weights","order_line_count_weights","discount_probability","discount_min_rate","discount_max_rate","refund_incidence_rate","anonymous_session_rate","campaign_session_rate","session_duration_minutes","product_price_cu","notes"}
 
@@ -70,14 +72,15 @@ def generate(config):
     base = {"categories": categories, "products": products, "customers": customers}
     transactions = generate_transactions(base, config)
     combined = {**base, **transactions}
-    return {**combined, **generate_marketing(combined, config)}
+    full = {**combined, **generate_marketing(combined, config)}
+    return {**full, "refunds": generate_refunds(full, config)}
 
 def validate(rows, config):
     for table, fields in FIELDS.items():
         records = rows[table]
         if table in config["counts"] and len(records) != config["counts"][table]:
             raise ValueError("Unexpected count: " + table)
-        pk = {"categories": "category_id", "products": "product_id", "customers": "customer_id", "orders": "order_id", "order_items": "order_item_id", "payments": "payment_id", "campaigns": "campaign_id", "sessions": "session_id", "events": "event_id"}[table]
+        pk = {"categories": "category_id", "products": "product_id", "customers": "customer_id", "orders": "order_id", "order_items": "order_item_id", "payments": "payment_id", "campaigns": "campaign_id", "sessions": "session_id", "events": "event_id", "refunds": "refund_id"}[table]
         if len({r[pk] for r in records}) != len(records) or any(set(r) != set(fields) for r in records):
             raise ValueError("Invalid keys/columns: " + table)
     category_ids = {r["category_id"] for r in rows["categories"]}
@@ -91,12 +94,13 @@ def validate(rows, config):
             raise ValueError("Invalid customer")
     transaction_summary = validate_transactions(rows, rows, config)
     marketing_summary = validate_marketing(rows, rows, config)
-    return {**transaction_summary, **marketing_summary}
+    refund_summary = validate_refunds(rows, config)
+    return {**transaction_summary, **marketing_summary, **refund_summary}
 
 def publish(rows, config, raw, output):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
-    manifest = {"generator_version": VERSION, "phase": "day-11-marketing-sessions-events", "seed": config["seed"], "currency": config["currency"], "observation_start": config["observation_start"], "observation_end": config["observation_end"], "config_sha256": hashlib.sha256(raw).hexdigest(), "files": {}, "validation": {"status": "passed", "scope": "nine tables (excluding refunds); PostgreSQL import not checked"}}
+    manifest = {"generator_version": VERSION, "phase": "day-12-refunds-and-quality", "seed": config["seed"], "currency": config["currency"], "observation_start": config["observation_start"], "observation_end": config["observation_end"], "config_sha256": hashlib.sha256(raw).hexdigest(), "files": {}, "validation": {"status": "passed", "scope": "ten tables; in-memory financial quality gate passed; PostgreSQL import not checked"}}
     for table, records in rows.items():
         path = output / (table + ".csv")
         with path.open("w", encoding="utf-8", newline="") as handle:
@@ -117,7 +121,7 @@ def main(argv=None):
     rows = generate(config)
     validate(rows, config)
     if args.validate_only:
-        print("PASS: Day 11 records validated in memory")
+        print("PASS: Day 12 records validated in memory")
     else:
         print(json.dumps(publish(rows, config, raw, args.output), sort_keys=True, indent=2))
     return 0
