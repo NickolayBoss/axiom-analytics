@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Days 01–12 source published; Day 11 and Day 12 CI acceptance pending  
+**Phase:** Days 01–13 source published; Day 11–13 runtime acceptance pending  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Verify Day 12 ten-table generator and PostgreSQL import; Day 13 SQL fundamentals
+**Next:** Verify ten-table PostgreSQL import and Day 13 queries; Day 14 revenue KPI mart
 
 ## Completed / verified
 
@@ -160,3 +160,10 @@ Do not check off an item until the corresponding artifact exists and has been ve
 **Publication policy:** Few meaningful commits; manual-only CI prevents per-commit email noise. Do not manufacture contribution activity.
 **Open:** Day 11 CI, Day 12 CI, real ten-table PostgreSQL import, SQL quality gate.
 **Next:** Day 13 SQL fundamentals after quality acceptance.
+
+### Day 13 — 2026-11-25
+**Artifacts:** [SQL fundamentals casebook](../database/analytics/day13_fundamentals.sql).
+**Scope:** Ten business queries covering filtering, joins, grouping, HAVING, anti-joins, category sales, monthly AOV, payment attempts and settled refunds. Completed-order totals are aggregated before calculating AOV. UTC reporting; refund settlement month is separate from order month.
+**Run:** `psql -X -v ON_ERROR_STOP=1 -f database/analytics/day13_fundamentals.sql` against a populated PostgreSQL database. The read-only transaction checks sales/capture reconciliation and rejects empty completed-order datasets and missing order items.
+**Verification:** Source publication only; PostgreSQL execution and fixture results pending. No numerical findings claimed. Day 11–12 CI acceptance remains pending. No workflow changes or automatic generator runs requested.
+**Next:** Day 14 revenue and order KPI mart.
