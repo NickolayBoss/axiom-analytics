@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Days 01–14 source published; Day 11–14 runtime acceptance pending  
+**Phase:** Days 01–15 source published; Day 11–15 runtime acceptance pending  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Verify PostgreSQL import and revenue reconciliation; Day 15 window functions and CTEs
+**Next:** Verify PostgreSQL import, revenue and window fixtures; Day 16 customer retention
 
 ## Completed / verified
 
@@ -174,3 +174,11 @@ Do not check off an item until the corresponding artifact exists and has been ve
 **Run:** After migration 001 and loading validated synthetic data, execute `psql -X -v ON_ERROR_STOP=1 -f database/analytics/day14_revenue_mart.sql`. Requires permission to create analytics schema/views. DDL commits before read-only acceptance checks; failed acceptance does not remove views.
 **Acceptance:** Compare completed order counts, captured amounts and settled refunds to monthly totals; verify daily identities and per-order capture reconciliation. Source published; runtime results not verified. No actual KPI values claimed. Day 11–13 runtime gates remain pending.
 **Next:** Day 15 window functions and CTE casebook.
+
+### Day 15 — 2026-11-27
+**Artifact:** [Advanced SQL window casebook](../database/analytics/day15_windows.sql).
+**Scope:** Six analytical cases: customer rankings, top product revenue ranks by category, calendar-day cumulative sales and seven-day moving average, month-over-month growth, customer purchase sequences and monthly revenue share. Uses CTEs, RANK, DENSE_RANK, ROW_NUMBER, LAG, LEAD and explicit window frames.
+**Decisions:** UTC calendar; internal missing dates/months filled with zero within observed bounds only; first six moving-average days return NULL; zero prior-month sales yields undefined growth (NULL); equal sales share ranks; stable row numbering uses customer/order IDs. Top three ranks may contain more than three products. Monetary values CU, synthetic data only.
+**Run:** After successful Day 14 acceptance, execute `psql -X -v ON_ERROR_STOP=1 -f database/analytics/day15_windows.sql`. Read-only repeatable-read transaction. Inline deterministic fixtures check ties, missing calendar dates, lag/lead boundaries, cumulative sales and full-window average. Data checks reject empty completed sales and reconcile daily sales to order sales.
+**Verification:** Source reviewed against Day 14 view definitions and published. Local PostgreSQL executable unavailable; fixtures and full dataset queries not executed. Day 11–15 runtime acceptance remains pending. No CI dispatch or fabricated numerical findings.
+**Next:** Day 16 customer retention and cohort analysis.
