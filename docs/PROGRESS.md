@@ -2,10 +2,10 @@
 
 ## Current status
 
-**Phase:** Days 01–13 source published; Day 11–13 runtime acceptance pending  
+**Phase:** Days 01–14 source published; Day 11–14 runtime acceptance pending  
 **Project start:** 2026-11-13  
 **Target portfolio release:** 2026-12-12  
-**Next:** Verify ten-table PostgreSQL import and Day 13 queries; Day 14 revenue KPI mart
+**Next:** Verify PostgreSQL import and revenue reconciliation; Day 15 window functions and CTEs
 
 ## Completed / verified
 
@@ -167,3 +167,10 @@ Do not check off an item until the corresponding artifact exists and has been ve
 **Run:** `psql -X -v ON_ERROR_STOP=1 -f database/analytics/day13_fundamentals.sql` against a populated PostgreSQL database. The read-only transaction checks sales/capture reconciliation and rejects empty completed-order datasets and missing order items.
 **Verification:** Source publication only; PostgreSQL execution and fixture results pending. No numerical findings claimed. Day 11–12 CI acceptance remains pending. No workflow changes or automatic generator runs requested.
 **Next:** Day 14 revenue and order KPI mart.
+
+### Day 14 — 2026-11-27
+**Artifact:** [Revenue KPI mart](../database/analytics/day14_revenue_mart.sql).
+**Design:** Three reusable views at completed-order, daily and monthly grain. UTC order placement date for sales; UTC settlement date for refunds. Refund-only dates retained; no zero-activity calendar spine. AOV is weighted by order count and null without orders. Currency CU, synthetic data only.
+**Run:** After migration 001 and loading validated synthetic data, execute `psql -X -v ON_ERROR_STOP=1 -f database/analytics/day14_revenue_mart.sql`. Requires permission to create analytics schema/views. DDL commits before read-only acceptance checks; failed acceptance does not remove views.
+**Acceptance:** Compare completed order counts, captured amounts and settled refunds to monthly totals; verify daily identities and per-order capture reconciliation. Source published; runtime results not verified. No actual KPI values claimed. Day 11–13 runtime gates remain pending.
+**Next:** Day 15 window functions and CTE casebook.
